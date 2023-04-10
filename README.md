@@ -1,4 +1,4 @@
 # class-security
 Security Class Repository
 
-https://www.dropbox.com/s/elm8t83seerz66z/security_slides.pdf?dl=0
+For class experiments visit the [Wiki](https://github.com/jpzm/class-security/wiki).
