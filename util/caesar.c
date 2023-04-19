@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define SIZE 256
 #define USAGE \
     "Caesar Cipher based encryption and decryption tool.\n"\
     "The result is printed to standard output.\n\n"\
@@ -23,9 +24,9 @@ int main(int argc, char **argv)
         {
             while (fread(&c, 1, 1, f))
             {
-                e = (c + k) % 256;
+                e = (c + k) % SIZE;
                 if (e < 0)
-                    e = 256 + e;
+                    e = SIZE + e;
                 printf("%c", e);
             }
         }
