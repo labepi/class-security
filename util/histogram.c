@@ -5,7 +5,8 @@
 #define USAGE \
     "Prints the amount of occurrencies of each byte on a given file.\n"\
     "The result is printed to standard output.\n\n"\
-    "%s <file>\n"\
+    "%s <min> <file>\n"\
+    "  <min>  - Minimum amount of occurrencies.\n"\
     "  <file> - File to read.\n"
 
 int main(int argc, char **argv)
@@ -13,13 +14,16 @@ int main(int argc, char **argv)
     unsigned int i, h[SIZE];
     unsigned char c;
     FILE *f;
+    int k;
 
-    if (argc == 2)
+    if (argc == 3)
     {
+        k = atoi(argv[1]);
+
         for (i = 0; i < SIZE; i++)
             h[i] = 0;
 
-        f = fopen(argv[1], "r");
+        f = fopen(argv[2], "r");
 
         if (f)
         {
@@ -28,8 +32,8 @@ int main(int argc, char **argv)
         }
 
         for (i = 0; i < SIZE; i++)
-            if (h[i] > 0)
-                printf("%u %d\n", i, h[i]);
+            if (h[i] >= k)
+                printf("%.2x %d\n", i, h[i]);
     }
     else
         printf(USAGE, argv[0]);
