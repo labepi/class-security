@@ -1,5 +1,14 @@
+#!/usr/bin/python
+
 import sys
 import math
+
+USAGE = """\
+Returns all possible RSA systems with the given parameter.
+
+{} <max>
+  <max> - maximum value for the modulo right operand.\
+"""
 
 def egcd(a, b):
     """
@@ -113,18 +122,22 @@ def private(info):
             d = totient + d
         ans.append((e, d))
 
-    return (p, q, totient, len(ans), ans)
+    return (p, q, totient, ans)
 
 if __name__ == "__main__":
     """
     """
-    ans = []
-    for pair in products(int(sys.argv[1])):
-        eset = public(pair)
-        if len(eset[3]):
-            ans.append(eset)
+    if len(sys.argv) == 2:
+        ans = []
+        for pair in products(int(sys.argv[1])):
+            eset = public(pair)
+            if len(eset[3]):
+                ans.append(eset)
+ 
+        book = []
+        for entry in ans:
+            book.append(private(entry))
+            print(book[-1])
 
-    book = []
-    for entry in ans:
-        book.append(private(entry))
-        print(book[-1])
+    else:
+        print(USAGE.format(sys.argv[0]))
