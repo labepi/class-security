@@ -137,7 +137,8 @@ if __name__ == "__main__":
         book = []
         for entry in ans:
             book.append(private(entry))
-            print(book[-1])
+            (p, q, totient, pairs) = book[-1]
+            print(p * q, book[-1])
 
     else:
         print(USAGE.format(sys.argv[0]))
