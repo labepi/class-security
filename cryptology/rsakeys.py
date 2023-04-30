@@ -12,10 +12,11 @@ Returns all possible RSA systems with the given parameter.
 
 def egcd(a, b):
     """
-    Extended GCD Algorithm
-    Returns 0: Greatest Common Divisor
-            1: Quotients by the GCD
-            2: Bézout Coefficients
+    Extended GCD Algorithm.
+    Returns (r, (s, t), (x, y)), where
+            r is the Greatest Common Divisor;
+            (s, t) are the Quotients by the GCD; and
+            (x, y) are the Bézout Coefficients.
     See: https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
     Time Complexity: O(h), where h is the number of digits in the smaller
         number b. 
@@ -34,7 +35,7 @@ def egcd(a, b):
 
 def gcd(a, b):
     """
-    Greatest Common Divisor Algorithm
+    Greatest Common Divisor Algorithm.
     Time Complexity: O(h), where h is the number of digits in the smaller
         number b. 
     """
@@ -44,35 +45,36 @@ def gcd(a, b):
 
 def lcm(a, b):
     """
-    Least Common Multiple
+    Least Common Multiple.
     Time Complexity: O(h), where h is the number of digits in the smaller
         number b. 
     """
     return int((a * b) / gcd(a, b))
 
-def prime(n):
+def factor(n):
     """
     Primality Test.
+    Returns the least prime factor of n or None if n is prime.
     Time Complexity: O(sqrt(n)).
     """
     root = 2
 
     while (root * root) <= n:
         if n % root == 0:
-            return False
+            return root
         root = root + 1
 
-    return True
+    return None
 
 def primes(n):
     """
-    Returns a list of prime in the interval [2, n].
+    Returns a list of primes in the interval [2, n].
     Time Complexity: O(n * sqrt(n)).
     """
     ans = []
 
     while n > 1:
-        if prime(n):
+        if factor(n) == None:
             ans.append(n)
         n = n - 1
 
@@ -99,6 +101,8 @@ def products(n):
 
 def public(pair):
     """
+    Given a pair (p, q) returns all possible RSA public keys using Carmichael's
+    totient function lambda(n), where n = p * q.
     """
     (p, q) = pair
     totient = lcm(p - 1, q - 1)
@@ -112,6 +116,8 @@ def public(pair):
 
 def private(info):
     """
+    Given partial RSA system (p, q, totient, keys), where keys is a set of
+    possible public keys, complement it with all associated RSA private keys.
     """
     (p, q, totient, keys) = info
     ans = []
@@ -124,21 +130,47 @@ def private(info):
 
     return (p, q, totient, ans)
 
+def book(limit):
+    """
+    Returns all possible RSA systems where n (module right operand) is less or
+    equal to the given limit.
+    """
+    ans = []
+    pairs = products(limit)
+    for pair in pairs:
+        (p, q, totient, keys) = public(pair)
+        if len(keys):
+            ans.append((p, q, totient, keys))
+ 
+    book = []
+    for entry in ans:
+        (p, q, totient, pairs) = private(entry)
+        book.append((p * q, p, q, totient, pairs))
+
+    return book
+
+def crack(n):
+    """
+    Given a modulo value n, compute all possible RSA systems if n is a product
+    of two prime numbers.
+    """
+    q = factor(n)
+
+    ans = ()
+    if q != None:
+        p = n // q
+        if factor(p) == None:
+            ans = private(public((p, q)))
+
+    return ans
+
 if __name__ == "__main__":
     """
     """
     if len(sys.argv) == 2:
-        ans = []
-        for pair in products(int(sys.argv[1])):
-            eset = public(pair)
-            if len(eset[3]):
-                ans.append(eset)
- 
-        book = []
-        for entry in ans:
-            book.append(private(entry))
-            (p, q, totient, pairs) = book[-1]
-            print(p * q, book[-1])
-
+        n = int(sys.argv[1])
+        b = book(n)
+        for i in b:
+            print(i)
     else:
         print(USAGE.format(sys.argv[0]))
