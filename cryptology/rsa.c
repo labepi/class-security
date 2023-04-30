@@ -3,11 +3,14 @@
 
 #define USAGE \
     "RSA Cipher based encryption and decryption tool.\n"\
+    "Encrypts each byte on the input using two bytes as output.\n"\
+    "Decrypts each two byte on the input using one byte as output.\n"\
+    "The possile module values are limited to the interval [259, 65531].\n"\
     "The result is printed to standard output.\n\n"\
     "%s [e|d] <key> <file>\n"\
     "  [e|d]  - Encryption or Decryption.\n"\
-    "  <key>  - Key to be used encrypt or decrypt.\n"\
-    "  <mod>  - Value for the modulo right operand [256, 65536].\n"\
+    "  <key>  - Key to be used to encrypt or decrypt.\n"\
+    "  <mod>  - Value for the modulo right operand.\n"\
     "  <file> - File to encrypt or decrypt.\n"
 
 unsigned int mod_exp(unsigned int c, unsigned int k, unsigned int m)
