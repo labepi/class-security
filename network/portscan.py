@@ -21,12 +21,12 @@ if __name__ == "__main__":
         s.settimeout(1)
         try:
             s.connect((host, port))
-            print("open", port)
+            print(host, port, "open")
         except ConnectionRefusedError:
-            print("closed", port)
+            print(host, port, "closed")
         except (TimeoutError, socket.timeout):
-            print("filtered", port)
+            print(host, port, "filtered")
         except Exception as e:
-            print("?", port, e)
+            print(host, port, "?", e)
     else:
         print(USAGE.format(sys.argv[0]))
