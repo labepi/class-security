@@ -15,9 +15,7 @@ if __name__ == "__main__":
 
     height, width, channels = array.shape
     i, j = 0, 0
-    text = ""
     for i in range(height):
         for j in range(width):
             r, g, b, a = array[i][j]
-            text += chr(merge_byte(r, g, b, a))
-    print(text)
+            print(bin(merge_byte(r, g, b, a)), merge_byte(r, g, b, a))
